@@ -22,7 +22,7 @@ pip install matplotlib numpy
 
 ## Using it
 
-### Interactive mode
+### Interactive mode - Main Libaray
 
 ```bash
 python -m cayleylab
@@ -167,6 +167,15 @@ cayleylab/
 
 - Build Cayley balls with BFS
 - Get growth exponents (exact or estimate)
-- Check if generators actually generate the whole group
 - Export to dot/png for pictures
 - Find dead ends 
+
+## Seperate script for checking if wreath products are k-generated 
+
+This is a standalone script (not part of the interactive menu). Run it directly to test whether a given wreath product is $k$-generated. Right now it only checks wreath products and reports whether the specified $k$ works.
+
+Example:
+
+```bash
+python prob_genSet.py "Z/2 x Z/2 wr Z/3" --k 2
+```
