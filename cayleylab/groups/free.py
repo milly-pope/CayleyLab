@@ -37,7 +37,7 @@ class FreeGroup:
     def __init__(self, rank=2):
         self.rank = rank
         self.inverses = build_inverses_map(rank)
-        self.name = f"F_{rank} (Free Group)"
+        self.name = "F_n (Free Group)"
     
     def identity(self):
         return ()

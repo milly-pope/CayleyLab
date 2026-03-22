@@ -141,6 +141,10 @@ def configure_group(group):
     # Common group configuration logic
     if group.name in ("Z^2", "D∞"):
         return group
+    elif group.name == "Dn":
+        n_str = input("n for finite dihedral D_{2n} [5]: ").strip()
+        n = int(n_str) if n_str else 5
+        return group.parse_options({"n": n})
     elif group.name == "Z":
         print("\nZ with restricted walk steps")
         print("Specify as: name=step, e.g. a=3, b=2")
@@ -231,6 +235,7 @@ def configure_group(group):
 def main_menu():
     from ..groups.Z2 import Z2
     from ..groups.Dinf import Dinf
+    from ..groups.Dn import Dn
     from ..groups.free import FreeGroup
     from ..groups.lamplighter import Lamplighter
     from ..groups.wreath import WreathProduct
@@ -239,6 +244,7 @@ def main_menu():
     groups = [
         Z2(),
         Dinf(),
+        Dn(),
         FreeGroup(),
         Lamplighter(),
         WreathProduct(),
@@ -271,6 +277,11 @@ def group_menu(group):
         "D∞": [
             "D∞ = Z ⋊ Z/2 with generators r, R, s.",
             "State = (k, eps). Every element is r^m or r^m s."
+        ],
+        "Dn": [
+            "Finite dihedral group D_{2n} with generators r, R, s.",
+            "Relations: r^n = e, s^2 = e, srs = r^{-1}.",
+            "State = (k, eps), with k mod n and eps ∈ {0,1}."
         ],
         "Lamplighter": [
             "Lamplighter group C ≀ D (wreath product)",

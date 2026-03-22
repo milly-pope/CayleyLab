@@ -43,6 +43,9 @@ def exact_integers(dim):
 def exact_dihedral_inf():
     return 1.0, "D∞: same as ℤ, polynomial growth (ω = 1)"
 
+def exact_dihedral_finite(n):
+    return 1.0, f"D_{{2n}} with n={n}: finite group (ω = 1)"
+
 def exact_Z_restricted_walk():
     return 1.0, "ℤ with restricted walk: polynomial growth (ω = 1, degree 1)"
 
@@ -75,6 +78,9 @@ def detect_exact_method(group):
     
     if name == "d∞" or name == "dinf":
         return ("Dinf", None)
+
+    if name == "dn":
+        return ("Dn", getattr(group, 'n', None))
     
     if name == "z" and hasattr(group, 'steps'):
         return ("Z_restricted_walk", None)
@@ -116,6 +122,8 @@ def analyze_growth(group, gens, radius, mode="auto", exact_kind=None, exact_para
             omega_exact, exact_source = exact_integers(exact_param or 2)
         elif exact_kind == "Dinf":
             omega_exact, exact_source = exact_dihedral_inf()
+        elif exact_kind == "Dn":
+            omega_exact, exact_source = exact_dihedral_finite(exact_param or 5)
         elif exact_kind == "Z_restricted_walk":
             omega_exact, exact_source = exact_Z_restricted_walk()
     

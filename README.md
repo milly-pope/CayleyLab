@@ -1,6 +1,6 @@
 # Cayley Graphs
 
-This is a tool for exploring infinite groups. For infinite groups you can't build the whole Cayley graph, this tool lets you compute balls of radius n. From there, you can then analyze properties like growth rates and visualize these balls. If selected the tool will output an image of the ball. Other specific functionalities can be seen from the interactive menu.
+This is a tool for exploring finitely generated groups (both finite and infinite). For infinite groups you can't build the whole Cayley graph, so this tool computes balls of radius $n$. From there you can analyze growth rates and visualize these balls. If selected, the tool outputs an image of the ball. Other functionality is available from the interactive menu.
 
 ## Setup
 
@@ -22,7 +22,7 @@ pip install matplotlib numpy
 
 ## Using it
 
-### Interactive mode - Main Libaray
+### Interactive mode - Main library
 
 ```bash
 python -m cayleylab
@@ -34,6 +34,14 @@ Pops up a terminal where you can:
 - export graphs (dot, png, json)
 - look at growth
 - check dead ends
+
+Current top-level menu includes:
+- $\mathbb{Z}^2$
+- $D_\infty$ (infinite dihedral)
+- $D_{2n}$ (finite dihedral, choose $n$ in the prompt)
+- $F_n$ (free group, choose rank in the prompt)
+- Lamplighter / general wreath product modes
+- $\mathbb{Z}$ restricted walks
 
 ### Check if wreath products are k-generated
 
@@ -81,12 +89,16 @@ group = Zmod(2)**3    # (ℤ/2)^3, direct product
 
 ### Dihedral groups
 
-**D_n** - symmetries of an n-gon (rotations + reflection). Order 2n.
+**$D_{2n}$** - symmetries of an $n$-gon (rotations + reflections), order $2n$.
 
-**D_∞** - infinite dihedral group, like symmetries of an infinite line. Polynomial growth like ℤ.
+**$D_\infty$** - infinite dihedral group, like symmetries of an infinite line. Polynomial growth like $\mathbb{Z}$.
 
 ```python
-group = Dihedral(n=4)  # D_4, dihedral group of order 8
+from cayleylab.groups.Dn import Dn
+from cayleylab.groups.Dinf import Dinf
+
+finite = Dn(n=4)   # D_{2n} with n=4, order 8
+infinite = Dinf()  # D_∞
 ```
 
 ### Wreath products 
@@ -108,8 +120,8 @@ group.parse_options({"spec": "Z/2 x Z/2 wr Z/3"})
 ```
 
 For wreath products, the spec is `"base wr walking"` where:
-- `base` can be things like `Z/2`, `Z/3`, `Z/2 x Z/3`, `free_2` (free group on 2 gens)
-- `walking` is usually `Z`, `Z/n`, `D_k`, or `Z/a x Z/b`
+- `base` can be `Z/n` (single lamp) or comma-separated lamp groups like `Z/2,Z/3`
+- `walking` can be `Z`, `nZ` (like `2Z`), `Z2`, `Dinf`, `Dn(n)`, `Free(k)`, or `abelian([m1,m2,...])`
 
 State is represented as `(head, tape)` where `head` is your position in the walking group and `tape` is a dict of lamp positions to lamp states. Only non-identity lamps are stored (for efficiency).
 
@@ -152,6 +164,8 @@ The code can compute ω exactly for some groups (free groups, ℤ, wreath produc
 cayleylab/
 ├── groups/       - group definitions
 │   ├── wreath.py         - wreath products
+│   ├── Dinf.py           - infinite dihedral group
+│   ├── Dn.py             - finite dihedral group D_{2n}
 │   ├── free.py           - free groups
 │   ├── Z_restricted_walk.py - Z with custom steps
 │   └── (other groups)
